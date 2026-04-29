@@ -131,7 +131,7 @@ export class Particle {
     }
 
     // Apply temporary attractor/repeller forces if enabled and mouse is down
-    if (CONFIG.attractorEnabled && state.mouseIsDown && CONFIG.motion !== "none") {
+    if (CONFIG.attractorEnabled && state.mouseIsDown) {
       this.applyMouseAttractor(state);
     }
 

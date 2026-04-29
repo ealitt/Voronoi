@@ -300,11 +300,22 @@ export function setupGUI(q5: any, state: AppState): dat.GUI {
 
   // Update visibility to show attractors when enabled
   const updateAttractorVisibility = () => {
-    const show = CONFIG.attractorEnabled;
-    show(controllers.showAttractorField, show);
-    show(controllers.attractorStrength, show);
-    show(controllers.attractorRadius, show);
-    show(controllers.attractorDecay, show);
+    const visible = CONFIG.attractorEnabled;
+    const show = (controller: any, v: boolean) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (controller) {
+        let el = controller.domElement as HTMLElement;
+        while (el && !el.classList.contains('cr') && el.tagName !== 'LI') {
+          el = el.parentElement as HTMLElement;
+        }
+        if (el) {
+          el.style.display = v ? '' : 'none';
+        }
+      }
+    };
+    show(controllers.showAttractorField, visible);
+    show(controllers.attractorStrength, visible);
+    show(controllers.attractorRadius, visible);
+    show(controllers.attractorDecay, visible);
   };
 
   // Also update visibility when motion changes
@@ -364,11 +375,14 @@ export function setupGUI(q5: any, state: AppState): dat.GUI {
 
   // Add circle exclusion zone
   CONFIG.addCircleExclusion = () => {
+    const radius = CONFIG.newCircleRadius;
     state.exclusionZones.push({
       type: "circle",
       x: state.width / 2,
       y: state.height / 2,
-      radius: CONFIG.newCircleRadius,
+      width: radius * 2,
+      height: radius * 2,
+      radius: radius,
     });
     exclusionCountObj.count = state.exclusionZones.length;
     saveState();

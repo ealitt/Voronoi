@@ -92,7 +92,7 @@ export function handleMousePressed(q5: any, state: AppState): void {
     const p = new Particle(q5.mouseX, q5.mouseY);
     state.particles.push(p);
     CONFIG.count = state.particles.length;
-    updateGUIDisplay();
+    updateGUIDisplay(state);
   }
   // If attractors are enabled and motion is active, the attractor effect
   // will be applied during particle updates via the mouse state
@@ -254,9 +254,9 @@ export function handleKeyPressed(q5: any, state: AppState): void {
   } else if (q5.key === "r" || q5.key === "R") {
     CONFIG.randomize();
   } else if (q5.key === "a" || q5.key === "A") {
-    previousPalette();
+    previousPalette(state);
   } else if (q5.key === "s" || q5.key === "S") {
-    nextPalette();
+    nextPalette(state);
   } else if (q5.key === "v" || q5.key === "V") {
     toggleHUD(state);
   } else if (q5.key === "f" || q5.key === "F") {
@@ -264,23 +264,23 @@ export function handleKeyPressed(q5: any, state: AppState): void {
   }
 }
 
-function nextPalette(): void {
+function nextPalette(state: AppState): void {
   const names = Object.keys(PALETTES);
   const currentIndex = names.indexOf(CONFIG.palette);
   const nextIndex = (currentIndex + 1) % names.length;
   CONFIG.palette = names[nextIndex];
-  if (CONFIG.gui) {
-    CONFIG.gui.updateDisplay();
+  if (state.gui) {
+    state.gui.updateDisplay();
   }
 }
 
-function previousPalette(): void {
+function previousPalette(state: AppState): void {
   const names = Object.keys(PALETTES);
   const currentIndex = names.indexOf(CONFIG.palette);
   const prevIndex = (currentIndex - 1 + names.length) % names.length;
   CONFIG.palette = names[prevIndex];
-  if (CONFIG.gui) {
-    CONFIG.gui.updateDisplay();
+  if (state.gui) {
+    state.gui.updateDisplay();
   }
 }
 
